@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MapContainer from "./components/MapContainer";
 import Form from "./components/formcomponent";
+import List from "./components/list";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,9 +18,12 @@ class App extends Component {
   }
   render() {
     return (
-      <div style={style.frame}>
-        <MapContainer markers={this.state.activeMarkers} />
-        <Form onSubmitClick={this.onAddMarker} />
+      <div>
+        <div style={style.frame}>
+          <MapContainer markers={this.state.activeMarkers} />
+          <Form onSubmitClick={this.onAddMarker} />
+        </div>
+        <List markers={this.state.activeMarkers} />
       </div>
     );
   }
