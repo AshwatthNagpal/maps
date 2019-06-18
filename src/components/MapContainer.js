@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 
 const mapStyles = {
-  width: "100%",
-  height: "100%"
+  width: "70%",
+  height: "70%"
 };
 
 class MapContainer extends Component {
   render() {
+    const allMarkers = this.props.markers.map(eachMarker => (
+      <Map position={eachMarker.position} name={eachMarker.name} />
+    ));
+
     return (
       <div>
         <Map
@@ -18,7 +22,9 @@ class MapContainer extends Component {
             lat: -1.2884,
             lng: 36.8233
           }}
-        />
+        >
+          {allMarkers}
+        </Map>
       </div>
     );
   }
@@ -26,4 +32,3 @@ class MapContainer extends Component {
 export default GoogleApiWrapper({
   apiKey: "AIzaSyB2lhSCoBMvAbrdDp4viBy9iJLnU5mJ1tk"
 })(MapContainer);
-
