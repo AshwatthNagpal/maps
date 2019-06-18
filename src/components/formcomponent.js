@@ -18,31 +18,28 @@ export default class Form extends Component {
     this.longChange = this.longChange.bind(this);
     this.submit = this.submit.bind(this);
   }
+
+  componentDidMount() {}
   nameChange = event => {
     this.setState({ name: event.target.value });
   };
 
   latChange = event => {
-    let value = parseFloat(event.target.value);
-    if (value == null || value == NaN) value = 0;
-    this.setState({ lat: value });
+    this.setState({ lat: event.target.value });
   };
 
   longChange = event => {
-    let value = parseFloat(event.target.value);
-    if (value == null || value == NaN) value = 0;
-    this.setState({ long: value });
+    this.setState({ long: event.target.value });
   };
-
   validateInput() {
     if (this.state.name.length < 3) this.setState({ nameError: true });
-    if (this.state.lat % 1 == 0) this.setState({ latError: true });
-    if (this.state.long % 1 == 0) this.setState({ longError: true });
+    if (isNaN(this.state.lat)) this.setState({ latError: true });
+    if (isNaN(this.state.long)) this.setState({ longError: true });
 
     if (
       this.state.name.length < 3 ||
-      this.state.lat % 1 == 0 ||
-      this.state.long % 1 == 0
+      isNaN(this.state.lat) ||
+      isNaN(this.state.long)
     )
       return null;
     let obj = {
@@ -67,6 +64,10 @@ export default class Form extends Component {
     if (obj) this.props.onSubmitClick(obj);
   }
   render() {
+    if (this.props.shouldSubmit) {
+      this.props.toggleShouldSubmit();
+      this.submit();
+    }
     return (
       <div style={style.frame}>
         <TextField
@@ -74,7 +75,7 @@ export default class Form extends Component {
           required
           label="Name"
           onChange={this.nameChange}
-          defaultValue={this.state.name}
+          value={this.state.name}
           style={style.textField}
           margin="normal"
         />
@@ -83,7 +84,7 @@ export default class Form extends Component {
           required
           label="lat"
           onChange={this.latChange}
-          defaultValue={this.state.lat}
+          value={this.state.lat}
           style={style.textField}
           margin="normal"
         />
@@ -92,11 +93,10 @@ export default class Form extends Component {
           required
           label="long"
           onChange={this.longChange}
-          defaultValue={this.state.long}
+          value={this.state.long}
           style={style.textField}
           margin="normal"
         />
-        <Button onClick={this.submit}>Submit</Button>
       </div>
     );
   }
